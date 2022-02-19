@@ -1,0 +1,16 @@
+class User < ApplicationRecord
+  before_create :confirmation_token
+
+  def email_activate
+    byebug
+    self.email_confirmed = true
+    self.confirm_token = nil
+    save!(validate: false)
+  end
+
+  private
+
+  def confirmation_token
+    self.confirm_token = SecureRandom.urlsafe_base64.to_s
+  end
+end
