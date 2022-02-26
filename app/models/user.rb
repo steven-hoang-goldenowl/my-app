@@ -2,7 +2,6 @@ class User < ApplicationRecord
   before_create :confirmation_token
 
   def email_activate
-    byebug
     self.email_confirmed = true
     self.confirm_token = nil
     save!(validate: false)
