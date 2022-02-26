@@ -46,7 +46,6 @@ class UsersController < ApplicationController
   end
 
   def confirm_email
-    byebug
     user = User.find_by(confirm_token: params[:confirm_token])
     if user
       user.email_activate

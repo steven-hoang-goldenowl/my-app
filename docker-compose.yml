@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - '80:3000'
+    command:
+      - /bin/bash
+      - -c
+      - |
+        rm -f tmp/pids/server.pid
+        RAILS_ENV=$RAILS_ENV bundle exec rake db:migrate 2>/dev/null || RAILS_ENV=$RAILS_ENV bundle exec rake db:create db:migrate
+        RAILS_ENV=$RAILS_ENV bundle exec rake assets:precompile
+        RAILS_ENV=$RAILS_ENV bundle exec rails s -b 0.0.0.0 -p 3000
+    environment:
+      - RDS_DB_NAME=${RDS_DB_NAME}
+      - RDS_USERNAME=${RDS_USERNAME}
+      - RDS_PASSWORD=${RDS_PASSWORD}
+      - RDS_HOSTNAME=${RDS_HOSTNAME}
+      - RAILS_MAX_THREADS=${RAILS_MAX_THREADS}
+      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+      - RAILS_ENV=${RAILS_ENV}
+      - RAILS_LOG_TO_STDOUT=true
+      - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES}
